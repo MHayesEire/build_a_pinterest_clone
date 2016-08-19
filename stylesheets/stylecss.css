@@ -1,0 +1,9 @@
+body { font-family: 'Alegreya Sans', sans-serif; }
+form { display: inline; }     
+.ddmenu {  position: absolute;   margin-left: 350px; }
+.item { border: 1px solid #69F; margin: 10px; box-shadow: 0px 0.1px 0px 2px rgba(0, 0, 0, 0.3), 0px 5px 5px 0px rgba(0, 0, 0, 0.6); height: auto; float:left; }
+p {background-color: #e6e6e6; margin: 3px; text-align: center; }
+.likes {background-color: #e6e6e6; display: table; margin: 0 auto; }
+.check {background-color: #ffffff; text-align: right; float: right; height: 28px; margin: 5px; }
+.del { float: left; overflow:hidden;margin: 2px; } 
+.boxcentre {width:100% }

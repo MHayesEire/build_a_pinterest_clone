@@ -1,0 +1,139 @@
+<!-- views/pages/mypics.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>My Pics - <%=title %></title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="/stylesheets/stylecss.css">       
+<script type="text/javascript" src="/javascripts/jsfile.js"></script>
+<!-- iconj.com favicon code -->
+<link rel="shortcut icon" href="http://www.iconj.com/icon.php?pid=vnu5kajf8j" type="image/x-icon" />
+<link rel="shortcut icon" href="http://www.iconj.com/gif_icon.php?pid=vnu5kajf8j" type="image/gif" /> 
+<!-- end of iconj.com favicon code -->
+<script src="https://npmcdn.com/masonry-layout@4.1/dist/masonry.pkgd.min.js"></script>
+<script src="http://imagesloaded.desandro.com/imagesloaded.pkgd.js"></script>   
+<script type="text/javascript" src="/javascripts/jsfile.js"></script>
+</head>
+<body>
+<div class="container">
+<div class="col-sm-11 col-sm-offset-1">
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"><%=title %></a>
+    </div>
+  <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="/all"> All </a></li>
+      <li><a href="/mypics"> My Pics </a></li>
+      <li class="dropdown">
+             <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="ddmenu"> Add a Pic 
+             <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+            <li>
+            <div class="">
+            <form action="/addpic" class="loginform" method="post">
+            <input type="text" name="url" value="" placeholder="Pic URL..." class="textbox"/>
+            <br />
+            <input type="text" name="desc" value="" placeholder="Pic description..." class="textbox"/>
+            <br/>
+            <input type="submit" class="button" value="Send" tabindex="3" />
+            </form>
+            </div>
+         </li>
+    </ul>
+ <li><a href="/logout"> Logout </a></li>      
+</ul>
+</nav>  
+    <div class="page-header text-center">
+        <h1><span class="glyphicon glyphicon-user"></span> My Pics </h1>
+    </div>
+        <div class="col-sm-12">
+ <div id='masonry' >
+<% 
+var objects = {};
+
+for (var x = 0; x < pics.length; x++) {
+  objects[x] = {_id:pics[x].imageurl , count:0};
+}
+
+for (var i = 0; i < pics.length; i++) {
+                     for(var j=0; j< likes.length; j++){
+                         
+                      if (pics[i].imageurl === likes[j]._id) {
+                        console.log('match - set count!');
+                        pics[i].count = likes[j].count;
+                      } else{console.log('No match found!');}
+                      
+                     }
+                     
+                    }
+for(var i=0; i< pics.length; i++) {%>
+ <div class="item" height="228"> <img width="180" src="<%= pics[i].imageurl %>" alt="<%= pics[i].sn %>" title="<%= pics[i].desc %>" />
+<p><%= pics[i].desc %></p>
+ <div class="likes">
+<form action="/userPics" method="post">
+    <input type="hidden" name="sn" value="<%= pics[i].sn %>">
+    <input type="hidden" name="id" value="<%= pics[i].id %>">
+    <input type="hidden" name="uimage" value="<%= pics[i].userimage %>">    
+    <input type="hidden" name="imageurl" value="<%= pics[i].imageurl %>">       
+<button type="submit" class="btn "> <img class="info" height="35" src="<%= uimage %>" title="@<%= pics[i].sn %>" />  </button>
+</form>     
+ <div class="del">
+<form action="/delmypic" method="post">
+    <input type="hidden" name="sn" value="<%= pics[i].sn %>">
+    <input type="hidden" name="id" value="<%= pics[i].id %>">
+    <input type="hidden" name="uimage" value="<%= pics[i].userimage %>">   
+    <input type="hidden" name="imageurl" value="<%= pics[i].imageurl %>">         
+<button type="submit" class="btn ">
+<span class="glyphicon glyphicon-trash"></span></button>
+     </form>
+     </div>
+<!-- Likes -->
+<form action="/likes" method="post">
+    <input type="hidden" name="sn" value="<%= pics[i].sn %>">
+    <input type="hidden" name="id" value="<%= pics[i].id %>">
+    <input type="hidden" name="uimage" value="<%= pics[i].userimage %>">   
+    <input type="hidden" name="urlimage" value="<%= pics[i].imageurl %>">      
+<%
+if(pics[i].count > 0){%>
+   <button type="submit" class="btn "> <span class="check glyphicon glyphicon-star"></span> likes <%= pics[i].count %> </button>
+
+<%
+}
+else{
+ %>
+ <button type="submit" class="btn "> <span class="check glyphicon glyphicon-star"></span> likes 0 </button>
+ <%
+}
+%>
+
+</form> 
+<!-- -->
+ </div>
+ </a>   
+   </div>
+<% 
+}
+%>
+ </div>
+ 
+ 
+<%if (error =="") { %>
+<% }else{ %>
+<h2><b style="color: red;"><%=error %></b></h2>
+<% } %>
+        </div>
+
+    </div>
+    </div>
+</div>
+</body>
+</html>
